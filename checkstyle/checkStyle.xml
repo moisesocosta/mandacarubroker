@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE module PUBLIC
+        "-//CHECKSTYLE//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <module name="LineLength"/><!--1-->
+    <module name="FileLength"/><!--2-->
+    <module name="TreeWalker">
+        <module name="UnusedImports"/><!--3-->
+        <module name="Indentation"/><!--4-->
+        <module name="TypeName"/><!--5-->
+        <module name="MethodName"/><!--6-->
+        <module name="JavadocMethod"/><!--7-->
+        <module name="JavadocType"/><!--8-->
+        <module name="AvoidNestedBlocks"/><!--9-->
+        <module name="EmptyBlock"/><!--10-->
+        <module name="SuppressWarnings"/><!--11-->
+        <module name="ClassFanOutComplexity"/><!--12-->
+        <module name="CyclomaticComplexity"/><!--13-->
+        <module name="ImportOrder"/><!--14-->
+    </module>
+</module>
