@@ -3,20 +3,17 @@ package com.mandacarubroker.service;
 import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.domain.stock.StockRepository;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
+import jakarta.validation.*;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import org.springframework.stereotype.Service;
 
 /**
  * Service for managing stock-related operations.
  *
- * @author Ricardo Vilela
+ * @author Ricardo Vilela.
  */
 @Service
 public class StockService {
@@ -44,7 +41,7 @@ public class StockService {
    * @param data The request data containing stock information.
    * @return The saved `Stock` object.
    * @throws ConstraintViolationException If the request data is invalid.
-   * @author Ricardo Vilela
+   * @author Ricardo Vilela.
    */
   public Stock createStock(RequestStockDTO data) {
     Stock novaAcao = new Stock(data);
@@ -58,7 +55,7 @@ public class StockService {
    * @param id           The ID of the stock to update.
    * @param updatedStock The updated stock information.
    * @return An Optional containing the updated stock, or empty if the stock was not found.
-   * @author Ricardo Vilela
+   * @author Ricardo Vilela.
    */
   public Optional<Stock> updateStock(String id, Stock updatedStock) {
     return stockRepository.findById(id)
@@ -72,6 +69,13 @@ public class StockService {
             });
   }
 
+  /**
+   * Deletes an existing action record in the database.
+   *
+   * @param id The ID of the action to be deleted.
+   * @throws IllegalArgumentException If the supplied ID is null or empty.
+   * @author Ricardo Vilela.
+   */
   public void deleteStock(String id) {
     stockRepository.deleteById(id);
   }
@@ -81,7 +85,7 @@ public class StockService {
    *
    * @param data The RequestStockDTO to validate.
    * @throws ConstraintViolationException If validation fails.
-   * @author Ricardo Vilela
+   * @author Ricardo Vilela.
    */
   public static void validateRequestStockDto(RequestStockDTO data) {
     try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
