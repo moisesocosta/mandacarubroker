@@ -3,12 +3,15 @@ package com.mandacarubroker.service;
 import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.domain.stock.StockRepository;
-import jakarta.validation.*;
-import org.springframework.stereotype.Service;
-
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 
 /**
  * Service for managing stock-related operations.
