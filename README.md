@@ -135,6 +135,15 @@ Exclui uma ação específica com base no ID.
 DELETE /stocks/{id}
 ```
 
+**Resposta:**
+
+```json
+{
+  "success": true,
+  "message": "Stock ID {id} deletado com sucesso."
+}
+```
+
 ## Uso
 
 1. Clone o repositório: `git clone https://github.com/seu-usuario/MandaCaruBrokerAPI.git`
