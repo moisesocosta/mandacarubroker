@@ -37,7 +37,7 @@ public class Stock {
    * @param requestStockDto the RequestStockDTO containing the stock information
    * @author Ricardo Vilela
    */
-  public Stock(RequestStockDTO requestStockDto) {
+  public Stock(RequestStockDto requestStockDto) {
     this.symbol = requestStockDto.symbol();
     this.companyName = requestStockDto.companyName();
     this.price = changePrice(requestStockDto.price(), true);

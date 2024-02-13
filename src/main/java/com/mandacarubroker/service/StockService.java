@@ -1,6 +1,6 @@
 package com.mandacarubroker.service;
 
-import com.mandacarubroker.domain.stock.RequestStockDTO;
+import com.mandacarubroker.domain.stock.RequestStockDto;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.domain.stock.StockRepository;
 import jakarta.validation.ConstraintViolation;
@@ -46,7 +46,7 @@ public class StockService {
    * @throws ConstraintViolationException If the request data is invalid.
    * @author Ricardo Vilela.
    */
-  public Stock createStock(RequestStockDTO data) {
+  public Stock createStock(RequestStockDto data) {
     Stock novaAcao = new Stock(data);
     validateRequestStockDto(data);
     return stockRepository.save(novaAcao);
@@ -84,21 +84,21 @@ public class StockService {
   }
 
   /**
-   * Validates the given RequestStockDTO, ensuring that it meets all validation constraints.
+   * Validates the given RequestStockDto, ensuring that it meets all validation constraints.
    *
-   * @param data The RequestStockDTO to validate.
+   * @param data The RequestStockDto to validate.
    * @throws ConstraintViolationException If validation fails.
    * @author Ricardo Vilela.
    */
-  public static void validateRequestStockDto(RequestStockDTO data) {
+  public static void validateRequestStockDto(RequestStockDto data) {
     try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
       Validator validator = factory.getValidator();
-      Set<ConstraintViolation<RequestStockDTO>> violations = validator.validate(data);
+      Set<ConstraintViolation<RequestStockDto>> violations = validator.validate(data);
 
       if (!violations.isEmpty()) {
         StringBuilder errorMessage = new StringBuilder("Validation failed. Details: ");
 
-        for (ConstraintViolation<RequestStockDTO> violation : violations) {
+        for (ConstraintViolation<RequestStockDto> violation : violations) {
           errorMessage.append(String.format("[%s: %s], ",
                   violation.getPropertyPath(), violation.getMessage()));
         }

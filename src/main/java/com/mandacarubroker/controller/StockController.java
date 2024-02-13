@@ -1,6 +1,6 @@
 package com.mandacarubroker.controller;
 
-import com.mandacarubroker.domain.stock.RequestStockDTO;
+import com.mandacarubroker.domain.stock.RequestStockDto;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.service.StockService;
 import java.util.List;
@@ -58,7 +58,7 @@ public class StockController {
    * @author Ricardo Vilela.
    */
   @PostMapping
-  public ResponseEntity<Stock> createStock(@RequestBody RequestStockDTO data) {
+  public ResponseEntity<Stock> createStock(@RequestBody RequestStockDto data) {
     Stock createdStock = stockService.createStock(data);
     return ResponseEntity.ok(createdStock);
   }
