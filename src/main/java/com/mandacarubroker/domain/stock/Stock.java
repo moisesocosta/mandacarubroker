@@ -32,9 +32,9 @@ public class Stock {
   private double price;
 
   /**
-   * Creates a new Stock instance based on the provided RequestStockDTO data.
+   * Creates a new Stock instance based on the provided RequestStockDto data.
    *
-   * @param requestStockDto the RequestStockDTO containing the stock information
+   * @param requestStockDto the RequestStockDto containing the stock information
    * @author Ricardo Vilela
    */
   public Stock(RequestStockDto requestStockDto) {
