@@ -95,7 +95,7 @@ public class StockControllerTest {
     stock.setPrice(10.0d);
     stock.setSymbol("Symbol");
     Optional<Stock> ofResult = Optional.of(stock);
-    when(stockService.getStockById(Mockito.<String>any())).thenReturn(ofResult);
+    when(stockService.getStockById(Mockito.any())).thenReturn(ofResult);
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/stocks/{id}", "42");
 
     // Act and Assert
@@ -121,7 +121,7 @@ public class StockControllerTest {
     stock.setId("42");
     stock.setPrice(10.0d);
     stock.setSymbol("Symbol");
-    when(stockService.createStock(Mockito.<RequestStockDto>any())).thenReturn(stock);
+    when(stockService.createStock(Mockito.any())).thenReturn(stock);
     MockHttpServletRequestBuilder contentTypeResult = MockMvcRequestBuilders.post("/stocks")
             .contentType(MediaType.APPLICATION_JSON);
 
@@ -153,7 +153,7 @@ public class StockControllerTest {
     stock.setPrice(10.0d);
     stock.setSymbol("Symbol");
     Optional<Stock> ofResult = Optional.of(stock);
-    when(stockService.updateStock(Mockito.<String>any(), Mockito.<Stock>any())).thenReturn(ofResult);
+    when(stockService.updateStock(Mockito.any(), Mockito.any())).thenReturn(ofResult);
 
     Stock stock2 = new Stock();
     stock2.setCompanyName("Company Name");
@@ -183,7 +183,7 @@ public class StockControllerTest {
   @Test
   public void testDeleteStock() throws Exception {
     // Arrange
-    doNothing().when(stockService).deleteStock(Mockito.<String>any());
+    doNothing().when(stockService).deleteStock(Mockito.any());
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/stocks/{id}", "42");
 
     // Act and Assert
@@ -201,7 +201,7 @@ public class StockControllerTest {
   @Test
   public void testDeleteStock2() throws Exception {
     // Arrange
-    doNothing().when(stockService).deleteStock(Mockito.<String>any());
+    doNothing().when(stockService).deleteStock(Mockito.any());
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/stocks/{id}", "42");
     requestBuilder.contentType("https://example.org/example");
 
