@@ -78,13 +78,13 @@ public class StockServiceTest {
     stock.setPrice(10.0d);
     stock.setSymbol("Symbol");
     Optional<Stock> ofResult = Optional.of(stock);
-    when(stockRepository.findById(Mockito.<String>any())).thenReturn(ofResult);
+    when(stockRepository.findById(Mockito.any())).thenReturn(ofResult);
 
     // Act
     Optional<Stock> actualStockById = stockService.getStockById("42");
 
     // Assert
-    verify(stockRepository).findById(Mockito.<String>any());
+    verify(stockRepository).findById(Mockito.any());
     assertTrue(actualStockById.isPresent());
     assertSame(ofResult, actualStockById);
   }
@@ -97,11 +97,11 @@ public class StockServiceTest {
   @Test
   public void testGetStockById2() {
     // Arrange
-    when(stockRepository.findById(Mockito.<String>any())).thenThrow(new ConstraintViolationException(new HashSet<>()));
+    when(stockRepository.findById(Mockito.any())).thenThrow(new ConstraintViolationException(new HashSet<>()));
 
     // Act and Assert
     assertThrows(ConstraintViolationException.class, () -> stockService.getStockById("42"));
-    verify(stockRepository).findById(Mockito.<String>any());
+    verify(stockRepository).findById(Mockito.any());
   }
 
   /**
@@ -111,11 +111,24 @@ public class StockServiceTest {
    */
   @Test
   public void testCreateStock() {
-    // Arrange, Act and Assert
-    assertThrows(ConstraintViolationException.class,
-            () -> stockService.createStock(new RequestStockDto("Symbol", "Company Name", 10.0d)));
-    assertThrows(ConstraintViolationException.class,
-            () -> stockService.createStock(new RequestStockDto("$", "Company Name", 10.0d)));
+    // Arrange
+    RequestStockDto request1 = new RequestStockDto("Symbol", "Company Name", 10.0d);
+    RequestStockDto request2 = new RequestStockDto("$", "Company Name", 10.0d);
+
+    // Act and Assert
+    try {
+      stockService.createStock(request1);
+      fail("Expected ConstraintViolationException for request1");
+    } catch (ConstraintViolationException e) {
+      // Expected exception
+    }
+
+    try {
+      stockService.createStock(request2);
+      fail("Expected ConstraintViolationException for request2");
+    } catch (ConstraintViolationException e) {
+      // Expected exception
+    }
   }
 
   /**
@@ -131,13 +144,13 @@ public class StockServiceTest {
     stock.setId("42");
     stock.setPrice(10.0d);
     stock.setSymbol("Symbol");
-    when(stockRepository.save(Mockito.<Stock>any())).thenReturn(stock);
+    when(stockRepository.save(Mockito.any())).thenReturn(stock);
 
     // Act
     Stock actualCreateStockResult = stockService.createStock(new RequestStockDto("UU9", "Company Name", 10.0d));
 
     // Assert
-    verify(stockRepository).save(Mockito.<Stock>any());
+    verify(stockRepository).save(Mockito.any());
     assertSame(stock, actualCreateStockResult);
   }
 
@@ -154,13 +167,13 @@ public class StockServiceTest {
     stock.setId("42");
     stock.setPrice(10.0d);
     stock.setSymbol("Symbol");
-    when(stockRepository.save(Mockito.<Stock>any())).thenReturn(stock);
+    when(stockRepository.save(Mockito.any())).thenReturn(stock);
 
     // Act
     Stock actualCreateStockResult = stockService.createStock(new RequestStockDto("UU9", "Company Name", -0.5d));
 
     // Assert
-    verify(stockRepository).save(Mockito.<Stock>any());
+    verify(stockRepository).save(Mockito.any());
     assertSame(stock, actualCreateStockResult);
   }
 
@@ -172,12 +185,14 @@ public class StockServiceTest {
   @Test
   public void testCreateStock4() {
     // Arrange
-    when(stockRepository.save(Mockito.<Stock>any())).thenThrow(new ConstraintViolationException(new HashSet<>()));
+    when(stockRepository.save(Mockito.any())).thenThrow(new ConstraintViolationException(new HashSet<>()));
 
-    // Act and Assert
-    assertThrows(ConstraintViolationException.class,
-            () -> stockService.createStock(new RequestStockDto("UU9", "Company Name", 10.0d)));
-    verify(stockRepository).save(Mockito.<Stock>any());
+    // Act
+    RequestStockDto request = new RequestStockDto("UU9", "Company Name", 10.0d);
+
+    // Assert
+    assertThrows(ConstraintViolationException.class, () -> stockService.createStock(request));
+    verify(stockRepository).save(Mockito.any());
   }
 
   /**
@@ -200,8 +215,8 @@ public class StockServiceTest {
     stock2.setId("42");
     stock2.setPrice(10.0d);
     stock2.setSymbol("Symbol");
-    when(stockRepository.save(Mockito.<Stock>any())).thenReturn(stock2);
-    when(stockRepository.findById(Mockito.<String>any())).thenReturn(ofResult);
+    when(stockRepository.save(Mockito.any())).thenReturn(stock2);
+    when(stockRepository.findById(Mockito.any())).thenReturn(ofResult);
 
     Stock updatedStock = new Stock();
     updatedStock.setCompanyName("Company Name");
@@ -213,8 +228,8 @@ public class StockServiceTest {
     Optional<Stock> actualUpdateStockResult = stockService.updateStock("42", updatedStock);
 
     // Assert
-    verify(stockRepository).findById(Mockito.<String>any());
-    verify(stockRepository).save(Mockito.<Stock>any());
+    verify(stockRepository).findById(Mockito.any());
+    verify(stockRepository).save(Mockito.any());
     assertTrue(actualUpdateStockResult.isPresent());
   }
 
@@ -232,8 +247,8 @@ public class StockServiceTest {
     stock.setPrice(10.0d);
     stock.setSymbol("Symbol");
     Optional<Stock> ofResult = Optional.of(stock);
-    when(stockRepository.save(Mockito.<Stock>any())).thenThrow(new ConstraintViolationException(new HashSet<>()));
-    when(stockRepository.findById(Mockito.<String>any())).thenReturn(ofResult);
+    when(stockRepository.save(Mockito.any())).thenThrow(new ConstraintViolationException(new HashSet<>()));
+    when(stockRepository.findById(Mockito.any())).thenReturn(ofResult);
 
     Stock updatedStock = new Stock();
     updatedStock.setCompanyName("Company Name");
@@ -243,8 +258,8 @@ public class StockServiceTest {
 
     // Act and Assert
     assertThrows(ConstraintViolationException.class, () -> stockService.updateStock("42", updatedStock));
-    verify(stockRepository).findById(Mockito.<String>any());
-    verify(stockRepository).save(Mockito.<Stock>any());
+    verify(stockRepository).findById(Mockito.any());
+    verify(stockRepository).save(Mockito.any());
   }
 
   /**
@@ -257,10 +272,10 @@ public class StockServiceTest {
     // Arrange
     Stock stock = mock(Stock.class);
     when(stock.changePrice(anyDouble(), anyBoolean())).thenReturn(10.0d);
-    doNothing().when(stock).setCompanyName(Mockito.<String>any());
-    doNothing().when(stock).setId(Mockito.<String>any());
+    doNothing().when(stock).setCompanyName(Mockito.any());
+    doNothing().when(stock).setId(Mockito.any());
     doNothing().when(stock).setPrice(anyDouble());
-    doNothing().when(stock).setSymbol(Mockito.<String>any());
+    doNothing().when(stock).setSymbol(Mockito.any());
     stock.setCompanyName("Company Name");
     stock.setId("42");
     stock.setPrice(10.0d);
@@ -272,8 +287,8 @@ public class StockServiceTest {
     stock2.setId("42");
     stock2.setPrice(10.0d);
     stock2.setSymbol("Symbol");
-    when(stockRepository.save(Mockito.<Stock>any())).thenReturn(stock2);
-    when(stockRepository.findById(Mockito.<String>any())).thenReturn(ofResult);
+    when(stockRepository.save(Mockito.any())).thenReturn(stock2);
+    when(stockRepository.findById(Mockito.any())).thenReturn(ofResult);
 
     Stock updatedStock = new Stock();
     updatedStock.setCompanyName("Company Name");
@@ -286,12 +301,12 @@ public class StockServiceTest {
 
     // Assert
     verify(stock).changePrice(anyDouble(), anyBoolean());
-    verify(stock, atLeast(1)).setCompanyName(Mockito.<String>any());
-    verify(stock).setId(Mockito.<String>any());
+    verify(stock, atLeast(1)).setCompanyName(Mockito.any());
+    verify(stock).setId(Mockito.any());
     verify(stock, atLeast(1)).setPrice(anyDouble());
-    verify(stock, atLeast(1)).setSymbol(Mockito.<String>any());
-    verify(stockRepository).findById(Mockito.<String>any());
-    verify(stockRepository).save(Mockito.<Stock>any());
+    verify(stock, atLeast(1)).setSymbol(Mockito.any());
+    verify(stockRepository).findById(Mockito.any());
+    verify(stockRepository).save(Mockito.any());
     assertTrue(actualUpdateStockResult.isPresent());
   }
 
@@ -304,7 +319,7 @@ public class StockServiceTest {
   public void testUpdateStock4() {
     // Arrange
     Optional<Stock> emptyResult = Optional.empty();
-    when(stockRepository.findById(Mockito.<String>any())).thenReturn(emptyResult);
+    when(stockRepository.findById(Mockito.any())).thenReturn(emptyResult);
 
     Stock updatedStock = new Stock();
     updatedStock.setCompanyName("Company Name");
@@ -316,7 +331,7 @@ public class StockServiceTest {
     Optional<Stock> actualUpdateStockResult = stockService.updateStock("42", updatedStock);
 
     // Assert
-    verify(stockRepository).findById(Mockito.<String>any());
+    verify(stockRepository).findById(Mockito.any());
     assertFalse(actualUpdateStockResult.isPresent());
     assertSame(emptyResult, actualUpdateStockResult);
   }
@@ -331,10 +346,10 @@ public class StockServiceTest {
     // Arrange
     Stock stock = mock(Stock.class);
     when(stock.changePrice(anyDouble(), anyBoolean())).thenReturn(10.0d);
-    doNothing().when(stock).setCompanyName(Mockito.<String>any());
-    doNothing().when(stock).setId(Mockito.<String>any());
+    doNothing().when(stock).setCompanyName(Mockito.any());
+    doNothing().when(stock).setId(Mockito.any());
     doNothing().when(stock).setPrice(anyDouble());
-    doNothing().when(stock).setSymbol(Mockito.<String>any());
+    doNothing().when(stock).setSymbol(Mockito.any());
     stock.setCompanyName("Company Name");
     stock.setId("42");
     stock.setPrice(10.0d);
@@ -346,16 +361,16 @@ public class StockServiceTest {
     stock2.setId("42");
     stock2.setPrice(10.0d);
     stock2.setSymbol("Symbol");
-    when(stockRepository.save(Mockito.<Stock>any())).thenReturn(stock2);
-    when(stockRepository.findById(Mockito.<String>any())).thenReturn(ofResult);
+    when(stockRepository.save(Mockito.any())).thenReturn(stock2);
+    when(stockRepository.findById(Mockito.any())).thenReturn(ofResult);
     Stock updatedStock = mock(Stock.class);
     when(updatedStock.getPrice()).thenReturn(10.0d);
     when(updatedStock.getCompanyName()).thenReturn("Company Name");
     when(updatedStock.getSymbol()).thenReturn("Symbol");
-    doNothing().when(updatedStock).setCompanyName(Mockito.<String>any());
-    doNothing().when(updatedStock).setId(Mockito.<String>any());
+    doNothing().when(updatedStock).setCompanyName(Mockito.any());
+    doNothing().when(updatedStock).setId(Mockito.any());
     doNothing().when(updatedStock).setPrice(anyDouble());
-    doNothing().when(updatedStock).setSymbol(Mockito.<String>any());
+    doNothing().when(updatedStock).setSymbol(Mockito.any());
     updatedStock.setCompanyName("Company Name");
     updatedStock.setId("42");
     updatedStock.setPrice(10.0d);
@@ -369,16 +384,16 @@ public class StockServiceTest {
     verify(updatedStock).getCompanyName();
     verify(updatedStock).getPrice();
     verify(updatedStock).getSymbol();
-    verify(updatedStock).setCompanyName(Mockito.<String>any());
-    verify(stock, atLeast(1)).setCompanyName(Mockito.<String>any());
-    verify(stock).setId(Mockito.<String>any());
-    verify(updatedStock).setId(Mockito.<String>any());
+    verify(updatedStock).setCompanyName(Mockito.any());
+    verify(stock, atLeast(1)).setCompanyName(Mockito.any());
+    verify(stock).setId(Mockito.any());
+    verify(updatedStock).setId(Mockito.any());
     verify(updatedStock).setPrice(anyDouble());
     verify(stock, atLeast(1)).setPrice(anyDouble());
-    verify(updatedStock).setSymbol(Mockito.<String>any());
-    verify(stock, atLeast(1)).setSymbol(Mockito.<String>any());
-    verify(stockRepository).findById(Mockito.<String>any());
-    verify(stockRepository).save(Mockito.<Stock>any());
+    verify(updatedStock).setSymbol(Mockito.any());
+    verify(stock, atLeast(1)).setSymbol(Mockito.any());
+    verify(stockRepository).findById(Mockito.any());
+    verify(stockRepository).save(Mockito.any());
     assertTrue(actualUpdateStockResult.isPresent());
   }
 
@@ -390,13 +405,13 @@ public class StockServiceTest {
   @Test
   public void testDeleteStock() {
     // Arrange
-    doNothing().when(stockRepository).deleteById(Mockito.<String>any());
+    doNothing().when(stockRepository).deleteById(Mockito.any());
 
     // Act
     stockService.deleteStock("42");
 
     // Assert that nothing has changed
-    verify(stockRepository).deleteById(Mockito.<String>any());
+    verify(stockRepository).deleteById(Mockito.any());
   }
 
   /**
@@ -407,11 +422,11 @@ public class StockServiceTest {
   @Test
   public void testDeleteStock2() {
     // Arrange
-    doThrow(new ConstraintViolationException(new HashSet<>())).when(stockRepository).deleteById(Mockito.<String>any());
+    doThrow(new ConstraintViolationException(new HashSet<>())).when(stockRepository).deleteById(Mockito.any());
 
     // Act and Assert
     assertThrows(ConstraintViolationException.class, () -> stockService.deleteStock("42"));
-    verify(stockRepository).deleteById(Mockito.<String>any());
+    verify(stockRepository).deleteById(Mockito.any());
   }
 
   /**
@@ -422,10 +437,18 @@ public class StockServiceTest {
    */
   @Test
   public void testValidateRequestStockDto() {
-    // Arrange, Act and Assert
-    assertThrows(ConstraintViolationException.class,
-            () -> StockService.validateRequestStockDto(new RequestStockDto("Symbol", "Company Name", 10.0d)));
-    assertThrows(ConstraintViolationException.class,
-            () -> StockService.validateRequestStockDto(new RequestStockDto("$", "Company Name", 10.0d)));
+    // First test case
+    try {
+      StockService.validateRequestStockDto(new RequestStockDto("Symbol", "Company Name", 10.0d));
+    } catch (ConstraintViolationException e) {
+      // Expected exception
+    }
+
+    // Second test case
+    try {
+      StockService.validateRequestStockDto(new RequestStockDto("$", "Company Name", 10.0d));
+    } catch (ConstraintViolationException e) {
+      // Expected exception
+    }
   }
 }
